@@ -1,5 +1,7 @@
 input <- as.numeric(paste(readLines("day1/input.txt")))
 
+## first star
+
 # initalise vectors
 elf <- c()
 list <- c()
@@ -15,3 +17,8 @@ for (i in input) {
 }
 
 max(list) # 65912
+
+## second star
+
+sorted <- sort(list, decreasing = TRUE)
+sum(sorted[1:3]) #195625
