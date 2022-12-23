@@ -31,3 +31,35 @@ stacks2 <- lapply(stacks2, rev)
 # remove whitespaces
 stacks2 <- lapply(stacks2, function(x) {x[ x != " "]})
 stacks2 <- unname(stacks2)
+
+# transform input
+moves <- moves%>%
+  str_remove("^move ") %>%
+  str_remove("from ") %>%
+  str_remove("to ") %>%
+  str_split(" ")
+
+# function that acutally moves crates
+do_moves <- function(state, vec) {
+  n <- vec[1]
+  from <- vec[2]
+  to <- vec <- vec[3]
+  from_stack <- state[[from]]
+  to_stack <- state[[to]]
+  crates <- from_stack[(length(from_stack) - n + 1):length(from_stack)]
+  crates <- rev(crates)
+  from_stack <- from_stack[-((length(from_stack) - n + 1):length(from_stack))]
+  to_stack <- c(to_stack, crates)
+  state[[from]] <- from_stack
+  state[[to]] <- to_stack
+  return(state)
+}
+
+# loop over input
+for (i in moves[1:length(moves)]) {
+  i <- as.numeric(i)
+  stacks2 <- do_moves(stacks2, i)
+}
+
+# final crates at top
+paste((unlist(lapply(stacks2, function(x) {tail(x, 1)}))), collapse = "")
