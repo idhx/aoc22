@@ -31,6 +31,7 @@ stacks2 <- lapply(stacks2, rev)
 # remove whitespaces
 stacks2 <- lapply(stacks2, function(x) {x[ x != " "]})
 stacks2 <- unname(stacks2)
+stacks3 <- stacks2 # copy for second exercise. should write a function, but eh
 
 # transform input
 moves <- moves%>%
@@ -63,3 +64,27 @@ for (i in moves[1:length(moves)]) {
 
 # final crates at top
 paste((unlist(lapply(stacks2, function(x) {tail(x, 1)}))), collapse = "")
+
+## second part
+do_moves2 <- function(state, vec) {
+  n <- vec[1]
+  from <- vec[2]
+  to <- vec <- vec[3]
+  from_stack <- state[[from]]
+  to_stack <- state[[to]]
+  crates <- from_stack[(length(from_stack) - n + 1):length(from_stack)]
+  from_stack <- from_stack[-((length(from_stack) - n + 1):length(from_stack))]
+  to_stack <- c(to_stack, crates)
+  state[[from]] <- from_stack
+  state[[to]] <- to_stack
+  return(state)
+}
+
+# loop over input
+for (i in moves[1:length(moves)]) {
+  i <- as.numeric(i)
+  stacks3 <- do_moves2(stacks3, i)
+}
+
+# final crates at top
+paste((unlist(lapply(stacks3, function(x) {tail(x, 1)}))), collapse = "")
