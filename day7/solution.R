@@ -5,9 +5,7 @@ input <- readLines("./day7/input.txt")
 path <- c()           # current path
 all_dirs_sizes <- c("/" = 0) # list of sizes
 
-
-# NOTE: potential edge case if there are two directories
-# with the same name on the system
+## part 1
 
 # function to parse input
 parse <- function(x, path, all_dirs_sizes) {
@@ -48,3 +46,9 @@ for (i in input) {
 
 # answer
 all_dirs_sizes[all_dirs_sizes <= 100000] %>% sum() # 1243729
+
+## part 2
+sorted_sizes <- sort(all_dirs_sizes)
+current_unused <- 70000000 - sorted_sizes["/"]
+needed <- 30000000 - current_unused
+sorted_sizes[sorted_sizes >= needed][[1]] # 4443914
